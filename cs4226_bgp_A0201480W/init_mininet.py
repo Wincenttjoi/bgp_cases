@@ -9,7 +9,7 @@ import time
 import os
 
 N = 4
-DIRPREFIX='/home/sdn/bgp_cases/1_a_simple_example' 
+DIRPREFIX='/home/sdn/bgp_cases/cs4226_bgp_A0201480W' 
 #NOTE: if using relative path, there would be error when creating .pid and .api files
 
 def prefix(address, length):
