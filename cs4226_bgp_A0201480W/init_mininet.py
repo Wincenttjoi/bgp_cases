@@ -116,19 +116,15 @@ class NetworkTopo( Topo ):
         h4 = self.addHost('h4', ip=prefix(h4_eth0, 24), defaultRoute='via {}'.format(r3_eth4))
 
         self.addLink(h1,r3,intfName2='r3-eth1',params2={ 'ip' : prefix(r3_eth1, 24) })
-        self.addLink(h2,r5,intfName2='r5-eth2',params2={ 'ip' : prefix(r5_eth2, 24) })
-        self.addLink(h3,r6,intfName2='r6-eth2',params2={ 'ip' : prefix(r6_eth2, 24) })
         self.addLink(h4,r3,intfName2='r3-eth4',params2={ 'ip' : prefix(r3_eth4, 24) })
-
-
-        self.addLink(r5, r1,
-                     intfName1='r5-eth1', params1={'ip': prefix(r5_eth1, 24)},
-                     intfName2='r1-eth3', params2={'ip': prefix(r1_eth3, 24)})
-
 
         self.addLink(r1, r4,
                      intfName1='r1-eth1', params1={'ip': prefix(r1_eth1, 24)},
                      intfName2='r4-eth1', params2={'ip': prefix(r4_eth1, 24)})
+
+        self.addLink(r5, r1,
+                     intfName1='r5-eth1', params1={'ip': prefix(r5_eth1, 24)},
+                     intfName2='r1-eth3', params2={'ip': prefix(r1_eth3, 24)})
              
         self.addLink(r4, r2,
                      intfName1='r4-eth2', params1={'ip': prefix(r4_eth2, 24)},
@@ -145,6 +141,9 @@ class NetworkTopo( Topo ):
         self.addLink(r3, r2,
                      intfName1='r3-eth3', params1={'ip': prefix(r3_eth3, 24)},
                      intfName2='r2-eth2', params2={'ip': prefix(r2_eth2, 24)})
+
+        self.addLink(h2,r5,intfName2='r5-eth2',params2={ 'ip' : prefix(r5_eth2, 24) })
+        self.addLink(h3,r6,intfName2='r6-eth2',params2={ 'ip' : prefix(r6_eth2, 24) })
 
 def run():
     "Test linux router"
