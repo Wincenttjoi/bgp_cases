@@ -15,6 +15,22 @@ DIRPREFIX='/home/sdn/bgp_cases/cs4226_bgp_A0201480W'
 def prefix(address, length):
     return "%s/%s" % (address, str(length))
 
+def start_ripd(r):
+    name = '{}'.format(r)
+    dir='{}/{}/'.format(DIRPREFIX, name)
+    config = dir + 'ripd.conf'
+    zsock  = dir + 'zserv.api'
+    pid    = dir + 'ripd.pid'
+    r.cmd('/usr/lib/quagga/ripd --daemon --config_file {} --pid_file {} --socket {}'.format(config, pid, zsock))
+
+def stop_ripd(r):
+    name = '{}'.format(r)
+    dir='{}/{}/'.format(DIRPREFIX, name)
+    pidfile =  dir + 'ripd.pid'
+    f = open(pidfile)
+    pid = int(f.readline())
+    r.cmd('kill {}'.format(pid))
+    info('stoped {} ripd'.format(name))
 
 def start_zebra(r):
     name = '{}'.format(r)
@@ -181,7 +197,20 @@ def run():
     for r in BGPnodelist:
         start_zebra(r)
         start_bgpd(r)
+
+    r1Node = net['r1']
+    r2Node = net['r2']
+    r4Node = net['r4']
     
+    info('starting r4 zebra, ripd service:\n')
+    start_zebra(r4Node)
+    start_ripd(r4Node)
+    
+    info('starting r1 ripd service:\n')
+    start_ripd(r1Node)
+
+    info('starting r2 ripd service:\n')
+    start_ripd(r2Node)
     
     # print routing table
     for node, type in net.items():
@@ -194,6 +223,16 @@ def run():
     #os.system("killall -9 bgpd zebra")
     # stop and erase .api .pid files
     
+    info('stoping r4 zebra, ripd service:\n')
+    stop_ripd(r4Node)
+    stop_zebra(r4Node)
+
+    
+    info('starting r1 ripd service:\n')
+    stop_ripd(r1Node)
+
+    info('starting r2 ripd service:\n')
+    stop_ripd(r2Node)
     
 
     for r in BGPnodelist:
