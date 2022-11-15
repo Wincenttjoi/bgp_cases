@@ -117,7 +117,6 @@ class NetworkTopo( Topo ):
         h3_eth0 = '6.3.3.2'
         h4_eth0 = '3.4.4.2'
 
-
         r1 = self.addNode('r1', cls=LinuxRouter, ip=prefix(r1_eth1, 24))
         r2 = self.addNode('r2', cls=LinuxRouter, ip=prefix(r2_eth1, 24))
         r3 = self.addNode('r3', cls=LinuxRouter, ip=prefix(r3_eth1, 24))
@@ -160,6 +159,8 @@ class NetworkTopo( Topo ):
 
         self.addLink(h2,r5,intfName2='r5-eth2',params2={ 'ip' : prefix(r5_eth2, 24) })
         self.addLink(h3,r6,intfName2='r6-eth2',params2={ 'ip' : prefix(r6_eth2, 24) })
+	
+
 
 def run():
     "Test linux router"
@@ -192,11 +193,12 @@ def run():
         bgpconf = create_bgpd_conf(r, ndict, addrdict, ASdict) 
         bgpconflist.append(bgpconf)
     '''
- 
+
     info('starting zebra and bgpd service:\n')
     for r in BGPnodelist:
         start_zebra(r)
         start_bgpd(r)
+
 
     r1Node = net['r1']
     r2Node = net['r2']
@@ -211,6 +213,8 @@ def run():
 
     info('starting r2 ripd service:\n')
     start_ripd(r2Node)
+
+
     
     # print routing table
     for node, type in net.items():
