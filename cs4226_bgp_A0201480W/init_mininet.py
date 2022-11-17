@@ -195,9 +195,12 @@ def run():
     '''
 
     info('starting zebra and bgpd service:\n')
+    idx1 = 0
     for r in BGPnodelist:
+        idx1 = idx1 + 1
         start_zebra(r)
-        start_bgpd(r)
+        if (idx1 != 4):
+            start_bgpd(r)
 
 
     r1Node = net['r1']
@@ -238,10 +241,13 @@ def run():
     info('starting r2 ripd service:\n')
     stop_ripd(r2Node)
     
-
+    idx = 0
     for r in BGPnodelist:
-        stop_bgpd(r)
-        stop_zebra(r)
+        idx = idx + 1
+        if (idx != 4):
+            stop_bgpd(r)
+            stop_zebra(r)
+
 
     net.stop()
     '''
